@@ -1,9 +1,10 @@
-﻿using System.ComponentModel;
-using System.Threading.Tasks;
-using FclEx.Extensions;
-using HttpAction.Core;
-using HttpAction.Event;
+﻿using FclEx;
+using FclEx.Http.Core;
+using FclEx.Http.Event;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
+using System.Text;
+using System.Threading.Tasks;
 using WebWeChat.Im.Core;
 
 namespace WebWeChat.Im.Actions
@@ -32,7 +33,7 @@ namespace WebWeChat.Im.Actions
             };
             var req = new HttpReq(HttpMethodType.Post, url)
             {
-                StringData = obj.ToJson(),
+                ByteArrayData = obj.ToJson().ToBytes(Encoding.UTF8),
                 ContentType = HttpConstants.JsonContentType,
             };
             return req;

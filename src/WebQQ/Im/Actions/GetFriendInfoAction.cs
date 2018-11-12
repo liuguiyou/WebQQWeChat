@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using HttpAction.Core;
+using FclEx.Http;
+using FclEx.Http.Core;
 using FclEx.Http.Event;
-using HttpAction;
 using Newtonsoft.Json.Linq;
 using WebQQ.Im.Bean.Friend;
 using WebQQ.Im.Core;
@@ -12,7 +12,7 @@ namespace WebQQ.Im.Actions
     {
         private readonly QQFriend _friend;
 
-        public GetFriendInfoAction(IQQContext context, QQFriend friend, ActionEventListener listener = null) 
+        public GetFriendInfoAction(IQQContext context, QQFriend friend, ActionEventListener listener = null)
             : base(context, listener)
         {
             _friend = friend;
@@ -62,7 +62,7 @@ namespace WebQQ.Im.Actions
                     }
                 }
             */
-            var info =  json["result"].ToObject<FriendInfo>();
+            var info = json["result"].ToObject<FriendInfo>();
             Mapper.Map(info, _friend);
         }
     }

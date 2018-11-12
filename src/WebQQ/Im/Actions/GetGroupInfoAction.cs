@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using FclEx.Extensions;
-using HttpAction.Core;
+﻿using AutoMapper;
+using FclEx;
+using FclEx.Http;
+using FclEx.Http.Core;
 using FclEx.Http.Event;
-using HttpAction;
+using MoreLinq;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 using WebQQ.Im.Bean;
 using WebQQ.Im.Bean.Group;
 using WebQQ.Im.Core;
@@ -118,7 +118,8 @@ namespace WebQQ.Im.Actions
                 members.GetAndDo(m.Uin, member => Mapper.Map(m, member));
             });
 
-            groupInfo.MapTo(_group);
+            //groupInfo.MapTo(_group);
+            Mapper.Map(groupInfo, _group);
             _group.Members.ReplaceBy(members);
         }
     }

@@ -1,8 +1,8 @@
-﻿using WebQQ.Im.Core;
-using WebQQ.Im.Service.Interface;
+﻿using FclEx.Http.Actions;
 using System.Reflection;
-using HttpAction.Actions;
 using WebQQ.Im.Actions;
+using WebQQ.Im.Core;
+using WebQQ.Im.Service.Interface;
 
 namespace WebQQ.Im.Service.Impl
 {
@@ -13,8 +13,8 @@ namespace WebQQ.Im.Service.Impl
             Context = context;
         }
 
-        public IQQContext Context { get;}
-        
+        public IQQContext Context { get; }
+
 
         public override IAction CreateAction<T>(params object[] parameters)
         {

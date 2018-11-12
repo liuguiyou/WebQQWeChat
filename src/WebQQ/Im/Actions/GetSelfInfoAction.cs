@@ -1,8 +1,6 @@
-﻿using System.Threading.Tasks;
-using FclEx.Extensions;
-using HttpAction.Core;
+﻿using FclEx.Http;
+using FclEx.Http.Core;
 using FclEx.Http.Event;
-using HttpAction;
 using Newtonsoft.Json.Linq;
 using WebQQ.Im.Bean;
 using WebQQ.Im.Core;
@@ -59,7 +57,8 @@ namespace WebQQ.Im.Actions
              */
 
             var info = json["result"].ToObject<SelfInfo>();
-            info.MapTo(Session.User);
+            //info.MapTo(Session.User);
+            AutoMapper.Mapper.Map(info, Session.User);
         }
     }
 }

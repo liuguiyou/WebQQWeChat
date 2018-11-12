@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using HttpAction.Core;
+﻿using FclEx.Http;
+using FclEx.Http.Core;
 using FclEx.Http.Event;
-using HttpAction;
+using System;
+using System.Threading.Tasks;
 using WebQQ.Im.Core;
 
 namespace WebQQ.Im.Actions
@@ -29,7 +29,7 @@ namespace WebQQ.Im.Actions
 
         protected override ValueTask<ActionEvent> HandleResponse(HttpRes response)
         {
-            return NotifyOkEventAsync(ImageSharp.Image.Load(response.ResponseBytes));
+            return NotifyOkEventAsync(SixLabors.ImageSharp.Image.Load(response.ResponseBytes));
         }
     }
 }

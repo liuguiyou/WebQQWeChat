@@ -1,14 +1,14 @@
+using FclEx;
+using FclEx.Http;
+using FclEx.Http.Event;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using FclEx.Extensions;
-using HttpAction.Event;
+using WebWeChat.Im.Actions;
+using WebWeChat.Im.Actions.ActionResult;
 using WebWeChat.Im.Bean;
 using WebWeChat.Im.Core;
 using WebWeChat.Im.Event;
 using WebWeChat.Im.Module.Interface;
-using HttpAction;
-using WebWeChat.Im.Actions;
-using WebWeChat.Im.Actions.ActionResult;
 
 namespace WebWeChat.Im.Module.Impl
 {
@@ -24,12 +24,13 @@ namespace WebWeChat.Im.Module.Impl
                 .PushAction<GetUuidAction>()
                 .PushAction<GetQRCodeAction>(async (sender, @event) =>
                 {
-                    if (!@event.IsOk) return;
+                    if (!@event.IsOk) return ActionEvent.EmptyOkEvent;
                     await Context.FireNotifyAsync(WeChatNotifyEvent.CreateEvent(WeChatNotifyEventType.QRCodeReady, @event.Target));
+                    return ActionEvent.EmptyOkEvent;
                 })
                 .PushAction<WatiForLoginAction>(async (sender, @event) =>
                 {
-                    if (!@event.IsOk) return;
+                    if (!@event.IsOk) return ActionEvent.EmptyOkEvent;
 
                     var result = (WatiForLoginResult)@event.Target;
                     switch (result)
@@ -39,20 +40,24 @@ namespace WebWeChat.Im.Module.Impl
                             break;
                         case WatiForLoginResult.QRCodeInvalid:
                             await Context.FireNotifyAsync(WeChatNotifyEvent.CreateEvent(WeChatNotifyEventType.QRCodeInvalid));
-                            @event.Type = ActionEventType.EvtError; // 令后续动作不再执行
-                            break;
+                           // 令后续动作不再执行
+                            return ActionEvent.Error("");
                         case WatiForLoginResult.ScanCode:
-                            @event.Type = ActionEventType.EvtRepeat;
-                            break;
+                            return ActionEvent.Repeat();
                     }
+                    return ActionEvent.EmptyOkEvent;
                 })
                 .PushAction<WebLoginAction>()
                 .PushAction<WebwxInitAction>()
                 .PushAction<StatusNotifyAction>()
                 .PushAction<GetContactAction>(async (sender, @event) =>
                 {
-                    if (!@event.IsOk) return;
-                    await Context.FireNotifyAsync(WeChatNotifyEvent.CreateEvent(WeChatNotifyEventType.LoginSuccess));
+                    if (@event.IsOk)
+                    {
+                        await Context.FireNotifyAsync(WeChatNotifyEvent.CreateEvent(WeChatNotifyEventType.LoginSuccess));
+                    }
+
+                    return ActionEvent.EmptyOkEvent;
                 })
                 .ExecuteAsync();
         }
@@ -62,7 +67,7 @@ namespace WebWeChat.Im.Module.Impl
             var sync = new SyncCheckAction(Context);
             var wxSync = new WebwxSyncAction(Context, async (s, e) =>
             {
-                if (e.Type == ActionEventType.EvtRetry) return;
+                if (e.Type == ActionEventType.EvtRetry) return ActionEvent.EmptyOkEvent;
                 sync.ExecuteAsync().Forget();
                 if (e.IsOk)
                 {
@@ -74,6 +79,7 @@ namespace WebWeChat.Im.Module.Impl
                         await Context.FireNotifyAsync(notify);
                     }
                 }
+                return ActionEvent.EmptyOkEvent;
             });
 
             sync.OnActionEvent += async (sender, @event) =>
@@ -91,7 +97,7 @@ namespace WebWeChat.Im.Module.Impl
                         case SyncCheckResult.Offline:
                         case SyncCheckResult.Kicked:
                             await Context.FireNotifyAsync(WeChatNotifyEvent.CreateEvent(WeChatNotifyEventType.Offline));
-                            return;
+                            break;
 
                         case SyncCheckResult.UsingPhone:
                         case SyncCheckResult.NewMsg:
@@ -103,6 +109,8 @@ namespace WebWeChat.Im.Module.Impl
                     }
                     (result == SyncCheckResult.Nothing ? sender : wxSync).ExecuteAutoAsync().Forget();
                 }
+
+                return ActionEvent.EmptyOkEvent;
             };
 
             sync.ExecuteAutoAsync().Forget();

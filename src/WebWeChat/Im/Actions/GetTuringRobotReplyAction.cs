@@ -1,10 +1,10 @@
-﻿using System.Text;
+﻿using FclEx;
+using FclEx.Http.Core;
+using FclEx.Http.Event;
+using Newtonsoft.Json.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using FclEx.Extensions;
-using HttpAction.Core;
-using HttpAction.Event;
-using Newtonsoft.Json.Linq;
 using WebWeChat.Im.Core;
 
 namespace WebWeChat.Im.Actions
@@ -23,21 +23,21 @@ namespace WebWeChat.Im.Actions
 
         protected override ValueTask<ActionEvent> ExecuteInternalAsync(CancellationToken token)
         {
-            return _key.IsNullOrEmpty() ? 
-                NotifyErrorEventAsync(WeChatErrorCode.ParameterError, nameof(_key)) : 
+            return _key.IsNullOrEmpty() ?
+                NotifyErrorEventAsync(WeChatErrorCode.ParameterError, nameof(_key)) :
                 base.ExecuteInternalAsync(token);
         }
 
         protected override HttpReq BuildRequest()
         {
-            var req = HttpReq.CreateJsonRequest(ApiUrls.TulingRobot);
+            var req = HttpReq.Create(ApiUrls.TulingRobot, HttpReqType.Json);
             var obj = new
             {
                 key = _key,
                 info = _input,
                 userid = Session.User.UserName,
             };
-            req.StringData = obj.ToJson();
+            req.ByteArrayData = obj.ToJson().ToBytes(Encoding.UTF8);
             return req;
         }
 
@@ -57,48 +57,48 @@ namespace WebWeChat.Im.Actions
 
                 // 链接类，包括列车、航班
                 case "200000":
-                    {
-                        var text = json["text"].ToString();
-                        var url = json["url"].ToString();
-                        reply = $"{text} \n网址：{url}";
-                        break;
-                    }
+                {
+                    var text = json["text"].ToString();
+                    var url = json["url"].ToString();
+                    reply = $"{text} \n网址：{url}";
+                    break;
+                }
 
                 // 新闻类
                 case "302000":
+                {
+                    var text = json["text"].ToString();
+                    var list = json["list"].ToObject<JArray>();
+                    var sb = new StringBuilder(text);
+                    foreach (var item in list)
                     {
-                        var text = json["text"].ToString();
-                        var list = json["list"].ToObject<JArray>();
-                        var sb = new StringBuilder(text);
-                        foreach (var item in list)
-                        {
-                            var article = item["article"].ToString();
-                            var source = item["source"].ToString();
-                            var icon = item["icon"].ToString();
-                            var detailurl = item["detailurl"].ToString();
-                            sb.AppendLine(article);
-                        }
-                        reply = sb.ToString();
-                        break;
+                        var article = item["article"].ToString();
+                        var source = item["source"].ToString();
+                        var icon = item["icon"].ToString();
+                        var detailurl = item["detailurl"].ToString();
+                        sb.AppendLine(article);
                     }
+                    reply = sb.ToString();
+                    break;
+                }
 
                 // 菜谱类
                 case "308000":
+                {
+                    var text = json["text"].ToString();
+                    var list = json["list"].ToObject<JArray>();
+                    var sb = new StringBuilder(text);
+                    foreach (var item in list)
                     {
-                        var text = json["text"].ToString();
-                        var list = json["list"].ToObject<JArray>();
-                        var sb = new StringBuilder(text);
-                        foreach (var item in list)
-                        {
-                            var name = item["name"].ToString();
-                            var icon = item["icon"].ToString();
-                            var info = item["info"].ToString();
-                            var detailurl = item["detailurl"].ToString();
-                            sb.AppendLine($"{name}：info");
-                        }
-                        reply = sb.ToString();
-                        break;
+                        var name = item["name"].ToString();
+                        var icon = item["icon"].ToString();
+                        var info = item["info"].ToString();
+                        var detailurl = item["detailurl"].ToString();
+                        sb.AppendLine($"{name}：info");
                     }
+                    reply = sb.ToString();
+                    break;
+                }
 
                 // 异常码
                 case "40001": return NotifyErrorEventAsync(WeChatException.CreateException(WeChatErrorCode.ResponseError, $"[参数key错误]:{str}"));

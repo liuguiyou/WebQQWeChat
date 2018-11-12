@@ -1,12 +1,8 @@
-﻿using System;
-using FclEx.Extensions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using WebQQ.Im.Core;
+﻿using Newtonsoft.Json.Linq;
 
 namespace WebQQ.Im.Bean.Content
 {
-    
+
     public class FaceItem : IContentItem
     {
         public int Id { get; set; }

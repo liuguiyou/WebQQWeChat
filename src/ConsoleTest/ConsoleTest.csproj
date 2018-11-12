@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebQQ\WebQQ.csproj" />
     <ProjectReference Include="..\WebWeChat\WebWeChat.csproj" />
   </ItemGroup>
 

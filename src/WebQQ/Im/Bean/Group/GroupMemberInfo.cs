@@ -1,4 +1,4 @@
-﻿using FclEx.Extensions;
+﻿using FclEx;
 
 namespace WebQQ.Im.Bean.Group
 {

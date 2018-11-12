@@ -1,13 +1,10 @@
-﻿using System;
+﻿using FclEx;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading.Tasks;
-using FclEx.Extensions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using WebQQ.Im.Bean.Content;
-using WebQQ.Util;
 
 namespace WebQQ.Im.Bean
 {
@@ -32,7 +29,7 @@ namespace WebQQ.Im.Bean
         /// 临时会话消息
         /// </summary>
         [Description("临时会话消息")]
-        Session         
+        Session
     }
 
     public class Message

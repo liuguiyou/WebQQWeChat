@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using FclEx.Extensions;
+﻿using FclEx;
 using Newtonsoft.Json.Linq;
-using WebQQ.Util;
+using System;
+using System.Collections.Generic;
 
 namespace WebQQ.Im.Bean.Content
 {

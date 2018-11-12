@@ -1,9 +1,9 @@
-﻿using FclEx.Extensions;
+﻿using FclEx;
 using System;
 using System.Collections.Concurrent;
 
 namespace WebWeChat.Im.Event
-{    
+{
 
     public class WeChatNotifyEvent : EventArgs
     {

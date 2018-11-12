@@ -1,4 +1,4 @@
-﻿using HttpAction.Actions;
+﻿using FclEx.Http.Actions;
 using FclEx.Http.Event;
 using WebQQ.Im.Core;
 using WebQQ.Im.Service.Interface;
@@ -25,8 +25,8 @@ namespace WebQQ.Im.Actions
         /// <returns></returns>
         public WebQQActionFuture PushAction<T>(params object[] args) where T : WebQQAction
         {
-            var action = ActionFactory.CreateAction<T>(args);
-            return (WebQQActionFuture)base.PushAction(action);
+            //var action = ActionFactory.CreateAction<T>(args);
+            return (WebQQActionFuture)base.PushAction(ActionFactory.CreateAction<T>);
         }
 
         /// <summary>
@@ -38,14 +38,14 @@ namespace WebQQ.Im.Actions
         /// <returns></returns>
         public WebQQActionFuture PushAction<T>(ActionEventListener listener) where T : WebQQAction
         {
-            var action = ActionFactory.CreateAction<T>(listener);
-            return (WebQQActionFuture)base.PushAction(action);
+            //var action = ActionFactory.CreateAction<T>(listener);
+            return (WebQQActionFuture)base.PushAction(ActionFactory.CreateAction<T>);
         }
 
         public WebQQActionFuture PushAction<T>(object obj, ActionEventListener listener) where T : WebQQAction
         {
-            var action = ActionFactory.CreateAction<T>(obj, listener);
-            return (WebQQActionFuture)base.PushAction(action);
+            //var action = ActionFactory.CreateAction<T>(obj, listener);
+            return (WebQQActionFuture)base.PushAction(ActionFactory.CreateAction<T>);
         }
     }
 }

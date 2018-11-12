@@ -1,7 +1,4 @@
-﻿using FclEx.Extensions;
-using System;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text;
 
 namespace WebQQ.Util
 {

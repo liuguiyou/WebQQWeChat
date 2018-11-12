@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using HttpAction.Actions;
+﻿using FclEx.Http.Actions;
+using System.Reflection;
 using WebWeChat.Im.Actions;
 using WebWeChat.Im.Core;
 using WebWeChat.Im.Service.Interface;
@@ -8,7 +8,7 @@ namespace WebWeChat.Im.Service.Impl
 {
     public class WeChatActionFactory : ActionFactory, IWeChatActionFactory
     {
-        public IWeChatContext Context { get;}
+        public IWeChatContext Context { get; }
 
         public WeChatActionFactory(IWeChatContext context)
         {

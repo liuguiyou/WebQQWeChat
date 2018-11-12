@@ -1,11 +1,11 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FclEx.Extensions;
-using HttpAction;
-using HttpAction.Core;
+﻿using FclEx;
+using FclEx.Http;
+using FclEx.Http.Core;
 using FclEx.Http.Event;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using WebQQ.Im.Bean;
 using WebQQ.Im.Bean.Discussion;
 using WebQQ.Im.Bean.Friend;
@@ -53,7 +53,7 @@ namespace WebQQ.Im.Actions
                        }                 
                     */
                     json.Add("to", fMsg.Friend.Uin);
-                    req = HttpReq.CreateFormRequest(ApiUrls.SendFriendMsg);
+                    req = HttpReq.Form(ApiUrls.SendFriendMsg);
                     break;
 
                 case GroupMessage gMsg:
@@ -67,7 +67,7 @@ namespace WebQQ.Im.Actions
                             "psessionid": "8368046764001d636f6e6e7365727665725f77656271714031302e3133332e34312e383400001ad00000066b026e040015808a206d0000000a406172314338344a69526d0000002859185d94e66218548d1ecb1a12513c86126b3afb97a3c2955b1070324790733ddb059ab166de6857"
                         }               
                     */
-                    req = HttpReq.CreateFormRequest(ApiUrls.SendGroupMsg);
+                    req = HttpReq.Form(ApiUrls.SendGroupMsg);
                     json.Add("group_uin", gMsg.Group.Gid);
                     break;
 
@@ -83,7 +83,7 @@ namespace WebQQ.Im.Actions
                         }                     
                      */
 
-                    req = HttpReq.CreateFormRequest(ApiUrls.SendDiscussionMsg);
+                    req = HttpReq.Form(ApiUrls.SendDiscussionMsg);
                     json.Add("did", dMsg.Discussion.Did);
                     break;
 

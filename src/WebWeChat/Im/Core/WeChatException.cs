@@ -1,16 +1,15 @@
-﻿using System;
+﻿using FclEx;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Net;
 using System.Text;
-using Newtonsoft.Json;
-using FclEx.Extensions;
 
 namespace WebWeChat.Im.Core
 {
     public class WeChatException : Exception
     {
-        private static readonly ConcurrentDictionary<WeChatErrorCode, WeChatException> Exceptions 
+        private static readonly ConcurrentDictionary<WeChatErrorCode, WeChatException> Exceptions
             = new ConcurrentDictionary<WeChatErrorCode, WeChatException>();
 
         private static WeChatErrorCode GetErrorCode(Exception e)

@@ -1,11 +1,10 @@
-﻿using System;
+﻿using FclEx;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json.Linq;
-
-using WebWeChat.Im.Core;
-using FclEx.Extensions;
 using WebWeChat.Im.Bean;
+using WebWeChat.Im.Core;
 
 namespace WebWeChat.Im.Module.Impl
 {
@@ -79,7 +78,7 @@ namespace WebWeChat.Im.Module.Impl
 
         public SessionModule(IWeChatContext context) : base(context)
         {
-            
+
         }
     }
 }

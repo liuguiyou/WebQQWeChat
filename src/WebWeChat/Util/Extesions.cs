@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using FclEx.Extensions;
+﻿using FclEx;
+using FclEx.Log;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using WebWeChat.Im.Bean;
 using WebWeChat.Im.Core;
 using WebWeChat.Im.Event;
 using WebWeChat.Im.Module.Impl;
-using FclEx.Logger;
 
 namespace WebWeChat.Util
 {
@@ -41,13 +39,13 @@ namespace WebWeChat.Util
         {
             return (T)e.Target;
         }
-		
+
         public static void Log(this IWebWeChatClient client, string msg, LogLevel level = LogLevel.Information)
         {
             var userName = client.Context?.GetModule<SessionModule>().User?.NickName;
             var prefix = userName.IsNullOrEmpty() ? string.Empty : $"[{userName}]";
             var str = $"{DateTime.Now:HH:mm:ss}> {prefix}{msg}";
             client.Logger.Log(str, level);
-        }		
+        }
     }
 }

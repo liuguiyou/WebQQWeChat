@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using HttpAction.Event;
+﻿using FclEx.Http.Event;
+using System.Threading.Tasks;
 
 namespace WebWeChat.Im.Module.Interface
 {
-    public interface ILoginModule: IWeChatModule
+    public interface ILoginModule : IWeChatModule
     {
         /// <summary>
         /// 登录，扫码方式

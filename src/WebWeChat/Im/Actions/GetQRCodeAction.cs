@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
+﻿using FclEx.Http;
+using FclEx.Http.Core;
+using FclEx.Http.Event;
+using System.ComponentModel;
 using System.Threading.Tasks;
-using HttpAction.Core;
-using HttpAction.Event;
-using HttpAction;
 using WebWeChat.Im.Core;
 
 namespace WebWeChat.Im.Actions
@@ -19,7 +19,7 @@ namespace WebWeChat.Im.Actions
 
         protected override HttpReq BuildRequest()
         {
-            var req =  new HttpReq(HttpMethodType.Post, string.Format(ApiUrls.GetQRCode, Session.Uuid));
+            var req = new HttpReq(HttpMethodType.Post, string.Format(ApiUrls.GetQRCode, Session.Uuid));
             req.AddData("t", "webwx");
             req.AddData("_", (Session.Seq++).ToString());
             req.ResultType = HttpResultType.Byte;
@@ -29,7 +29,7 @@ namespace WebWeChat.Im.Actions
         protected override ValueTask<ActionEvent> HandleResponse(HttpRes responseItem)
         {
             // return NotifyOkEventAsync(Image.FromStream(responseItem.ResponseStream));
-            return NotifyOkEventAsync(ImageSharp.Image.Load(responseItem.ResponseBytes));
+            return NotifyOkEventAsync(SixLabors.ImageSharp.Image.Load(responseItem.ResponseBytes));
         }
     }
 }

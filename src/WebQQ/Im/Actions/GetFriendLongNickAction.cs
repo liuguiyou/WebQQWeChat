@@ -1,6 +1,6 @@
-﻿using HttpAction.Core;
+﻿using FclEx.Http;
+using FclEx.Http.Core;
 using FclEx.Http.Event;
-using HttpAction;
 using Newtonsoft.Json.Linq;
 using WebQQ.Im.Bean.Friend;
 using WebQQ.Im.Core;

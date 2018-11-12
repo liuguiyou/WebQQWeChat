@@ -1,24 +1,24 @@
-﻿using System;
-using System.Threading.Tasks;
-using WebQQ.Im.Core;
-using WebQQ.Im.Event;
-using WebQQ.Im.Service.Interface;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using WebQQ.Im.Service.Impl;
-using AutoMapper;
+﻿using AutoMapper;
 using FclEx;
 using FclEx.Http.Event;
 using FclEx.Http.Services;
 using FclEx.Log;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 using WebIm.Im.Core;
 using WebIm.Utils;
 using WebQQ.Im.Bean;
 using WebQQ.Im.Bean.Discussion;
 using WebQQ.Im.Bean.Friend;
 using WebQQ.Im.Bean.Group;
+using WebQQ.Im.Core;
+using WebQQ.Im.Event;
 using WebQQ.Im.Modules.Impl;
 using WebQQ.Im.Modules.Interface;
+using WebQQ.Im.Service.Impl;
+using WebQQ.Im.Service.Interface;
 using WebQQ.Util;
 using QQListener = FclEx.Utils.AsyncEventHandler<WebQQ.Im.Core.IQQClient, WebQQ.Im.Event.QQNotifyEvent>;
 
@@ -104,6 +104,12 @@ namespace WebQQ.Im
             Http = _serviceProvider.GetRequiredService<IHttpService>();
 
             Init();
+        }
+
+        /// <inheritdoc />
+        public T GetSerivce<T>()
+        {
+            return _serviceProvider.GetRequiredService<T>();
         }
 
         public T GetModule<T>() where T : IImModule

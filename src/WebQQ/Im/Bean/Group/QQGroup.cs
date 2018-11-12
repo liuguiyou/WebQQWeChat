@@ -1,6 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using FclEx;
 using Newtonsoft.Json;
-using FclEx.Extensions;
+using System.Collections.Concurrent;
 
 namespace WebQQ.Im.Bean.Group
 {

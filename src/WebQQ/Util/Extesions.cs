@@ -1,12 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Threading.Tasks;
-using AutoMapper;
-using FclEx.Extensions;
-using ImageSharp;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using System.Threading.Tasks;
 using WebQQ.Im.Core;
 using WebQQ.Im.Event;
 using WebQQ.Im.Modules.Impl;

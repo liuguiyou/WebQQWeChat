@@ -1,9 +1,5 @@
-﻿using System;
+﻿using FclEx;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
-using FclEx.Extensions;
 
 namespace WebWeChat.Im.Bean
 {
@@ -18,7 +14,7 @@ namespace WebWeChat.Im.Bean
         ///
         /// </summary>
         public int ContactFlag { get; set; }
-        
+
         /// <summary>
         /// 成员数量，只有在群组信息中才有效 
         /// </summary>

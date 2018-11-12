@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
-using FclEx.Extensions;
-using HttpAction;
-using HttpAction.Core;
+﻿using AutoMapper;
+using FclEx;
+using FclEx.Http;
+using FclEx.Http.Core;
 using FclEx.Http.Event;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using WebQQ.Im.Bean;
 using WebQQ.Im.Bean.Friend;
 using WebQQ.Im.Core;
@@ -15,7 +14,7 @@ namespace WebQQ.Im.Actions
 {
     public class GetFriendsAction : WebQQInfoAction
     {
-        protected override HttpReqType ReqType { get; } = HttpReqType.Form; 
+        protected override HttpReqType ReqType { get; } = HttpReqType.Form;
 
         public GetFriendsAction(IQQContext context, ActionEventListener listener = null) : base(context, listener)
         {

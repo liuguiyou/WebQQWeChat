@@ -1,14 +1,14 @@
-﻿using System;
+﻿using FclEx;
+using FclEx.Http;
+using FclEx.Http.Core;
+using FclEx.Http.Event;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using FclEx.Extensions;
-using HttpAction;
-using HttpAction.Core;
-using FclEx.Http.Event;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using WebQQ.Im.Bean;
 using WebQQ.Im.Bean.Content;
 using WebQQ.Im.Bean.Friend;
@@ -63,35 +63,35 @@ namespace WebQQ.Im.Actions
 
                 case 110:
                 case 109:
-                    {
-                        // 客户端主动退出
-                        var msg = $"**** 客户端主动退出 retcode: {retcode} ****";
-                        Logger.LogWarning(msg);
-                        Session.State = SessionState.Offline;
-                        return NotifyOkEventAsync(QQNotifyEvent.CreateEvent(QQNotifyEventType.NetError, msg));
-                    }
+                {
+                    // 客户端主动退出
+                    var msg = $"**** 客户端主动退出 retcode: {retcode} ****";
+                    Logger.LogWarning(msg);
+                    Session.State = SessionState.Offline;
+                    return NotifyOkEventAsync(QQNotifyEvent.CreateEvent(QQNotifyEventType.NetError, msg));
+                }
 
 
                 case 121:
                 case 120:
                 case 100:
-                    {
-                        // 客户端主动退出
-                        var msg = $"**** 服务器需求重新认证 retcode: {retcode} ****";
-                        Logger.LogWarning(msg);
-                        Session.State = SessionState.Offline;
-                        return NotifyOkEventAsync(QQNotifyEvent.CreateEvent(QQNotifyEventType.NetError, msg));
-                    }
+                {
+                    // 客户端主动退出
+                    var msg = $"**** 服务器需求重新认证 retcode: {retcode} ****";
+                    Logger.LogWarning(msg);
+                    Session.State = SessionState.Offline;
+                    return NotifyOkEventAsync(QQNotifyEvent.CreateEvent(QQNotifyEventType.NetError, msg));
+                }
 
                 case 103: // 此时需要登录Smart QQ，确认能收到消息后点击设置-退出登录，就会恢复正常了
-                    {
-                        // 客户端主动退出
-                        var msg = $"**** 需要登录Smart QQ retcode: {retcode} ****";
-                        Logger.LogWarning(msg);
-                        // Session.State = SessionState.Offline;
-                        // return NotifyOkEventAsync(QQNotifyEvent.CreateEvent(QQNotifyEventType.NetError, msg));
-                        return NotifyOkEventAsync();
-                    }
+                {
+                    // 客户端主动退出
+                    var msg = $"**** 需要登录Smart QQ retcode: {retcode} ****";
+                    Logger.LogWarning(msg);
+                    // Session.State = SessionState.Offline;
+                    // return NotifyOkEventAsync(QQNotifyEvent.CreateEvent(QQNotifyEventType.NetError, msg));
+                    return NotifyOkEventAsync();
+                }
             }
             throw new QQException(QQErrorCode.ResponseError, response.ResponseString);
         }
@@ -100,13 +100,13 @@ namespace WebQQ.Im.Actions
         {
             if (Session.State == SessionState.Online && ex is TaskCanceledException)
             {
-                return Task.FromResult(ActionEvent.EmptyRepeatEvent);
+                return ActionEvent.EmptyOkEvent;
             }
             else if (ex is QQException qqEx)
             {
                 if (qqEx.ErrorCode == QQErrorCode.InvalidLoginAuth)
                 {
-                    RetryTimes = MaxReTryTimes;
+                    ExcuteTimes = MaxReTryTimes;
                 }
             }
             return base.HandleExceptionAsync(ex);
@@ -257,7 +257,7 @@ namespace WebQQ.Im.Actions
                 return new GroupMember { Uin = msg.SendUin };
             });
 
-            if(needUpdateGroup) events.Add(QQNotifyEvent.CreateEvent(QQNotifyEventType.NeedUpdateGroups, msg.Group));
+            if (needUpdateGroup) events.Add(QQNotifyEvent.CreateEvent(QQNotifyEventType.NeedUpdateGroups, msg.Group));
 
             events.Add(QQNotifyEvent.CreateEvent(QQNotifyEventType.GroupMsg, msg));
         }

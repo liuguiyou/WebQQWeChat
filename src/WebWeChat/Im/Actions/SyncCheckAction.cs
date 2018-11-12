@@ -1,14 +1,12 @@
-﻿using System;
+﻿using FclEx.Helpers;
+using FclEx.Http;
+using FclEx.Http.Core;
+using FclEx.Http.Event;
+using Microsoft.Extensions.Logging;
+using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using FclEx.Extensions;
-using FclEx.Helpers;
-using HttpAction.Core;
-using HttpAction.Event;
-using HttpAction;
-using Microsoft.Extensions.Logging;
 using WebWeChat.Im.Actions.ActionResult;
 using WebWeChat.Im.Core;
 using WebWeChat.Im.Module.Impl;
@@ -44,9 +42,13 @@ namespace WebWeChat.Im.Actions
             }
             var req = new HttpReq(HttpMethodType.Get, url)
             {
-                // 此处需要将key都变成小写，否则提交会失败
-                StringData = Session.BaseRequest.ToDictionary(pair => pair.Key.ToLower(), pair => pair.Value).ToQueryString(),
             };
+
+            // 此处需要将key都变成小写，否则提交会失败
+            foreach (var pair in Session.BaseRequest)
+            {
+                req.AddQueryValue(pair.Key.ToLower(), pair.Value);
+            }
             req.AddQueryValue("r", Timestamp);
             req.AddQueryValue("synckey", Session.SyncKeyStr);
             req.AddQueryValue("_", Session.Seq++);
@@ -58,7 +60,7 @@ namespace WebWeChat.Im.Actions
         {
             if (++_hostIndex < ApiUrls.SyncHosts.Length)
             {
-                return Task.FromResult(ActionEvent.EmptyRepeatEvent);
+                return ActionEvent.EmptyOkEvent;
             }
             else
             {
@@ -83,7 +85,7 @@ namespace WebWeChat.Im.Actions
                     if (retcode != "0") return TestNextHost();
                     else
                     {
-                        Session.SyncUrl = responseItem.RequestItem.RawUrl;
+                        Session.SyncUrl = responseItem.Req.Uri.OriginalString;
                         return this.ExecuteAsync();
                     }
                 }
@@ -113,13 +115,13 @@ namespace WebWeChat.Im.Actions
             // SyncUrl为空说明正在测试host
             if (Session.SyncUrl == null)
             {
-                if (++RetryTimes < MaxReTryTimes)
+                if (++ExcuteTimes < MaxReTryTimes)
                 {
-                    return NotifyActionEventAsync(ActionEvent.CreateEvent(ActionEventType.EvtRetry, ex));
+                    return NotifyActionEventAsync(ActionEvent.Create(ActionEventType.EvtRetry, ex));
                 }
                 else
                 {
-                    RetryTimes = 0;
+                    ExcuteTimes = 0;
                     return TestNextHost();
                 }
             }

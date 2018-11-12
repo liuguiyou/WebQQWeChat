@@ -1,9 +1,5 @@
-﻿using System;
-using System.Globalization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using WebQQ.Im.Core;
-using FclEx.Extensions;
 using WebQQ.Util;
 
 namespace WebQQ.Im.Bean.Content

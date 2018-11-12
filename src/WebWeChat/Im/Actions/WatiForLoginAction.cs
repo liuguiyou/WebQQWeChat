@@ -1,11 +1,11 @@
-﻿using System;
+﻿using FclEx.Helpers;
+using FclEx.Http;
+using FclEx.Http.Core;
+using FclEx.Http.Event;
+using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using FclEx.Helpers;
-using HttpAction.Core;
-using HttpAction.Event;
-using HttpAction;
 using WebWeChat.Im.Actions.ActionResult;
 using WebWeChat.Im.Core;
 
@@ -48,15 +48,15 @@ namespace WebWeChat.Im.Actions
                 switch (result)
                 {
                     case WatiForLoginResult.Success:
+                    {
+                        var m = _regUrl.Match(str);
+                        if (m.Success)
                         {
-                            var m = _regUrl.Match(str);
-                            if (m.Success)
-                            {
-                                Session.LoginUrl = $"{m.Groups[1].Value}&fun=new&version=v2";
-                                Session.BaseUrl = Session.LoginUrl.Substring(0, Session.LoginUrl.LastIndexOf("/", StringComparison.OrdinalIgnoreCase));
-                            }
-                            break;
+                            Session.LoginUrl = $"{m.Groups[1].Value}&fun=new&version=v2";
+                            Session.BaseUrl = Session.LoginUrl.Substring(0, Session.LoginUrl.LastIndexOf("/", StringComparison.OrdinalIgnoreCase));
                         }
+                        break;
+                    }
 
                     case WatiForLoginResult.ScanCode:
                         _tip = 0;

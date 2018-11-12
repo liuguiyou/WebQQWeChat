@@ -1,5 +1,5 @@
-﻿using HttpAction.Actions;
-using HttpAction.Event;
+﻿using FclEx.Http.Actions;
+using FclEx.Http.Event;
 using WebWeChat.Im.Core;
 using WebWeChat.Im.Service.Interface;
 
@@ -26,8 +26,8 @@ namespace WebWeChat.Im.Actions
         /// <returns></returns>
         public WebWeChatActionFuture PushAction<T>(params object[] args) where T : WebWeChatAction
         {
-            var action = ActionFactory.CreateAction<T>(args);
-            return (WebWeChatActionFuture)base.PushAction(action);
+            //var action = ActionFactory.CreateAction<T>(args);
+            return (WebWeChatActionFuture)base.PushAction(ActionFactory.CreateAction<T>);
         }
 
         /// <summary>
@@ -39,14 +39,14 @@ namespace WebWeChat.Im.Actions
         /// <returns></returns>
         public WebWeChatActionFuture PushAction<T>(ActionEventListener listener) where T : WebWeChatAction
         {
-            var action = ActionFactory.CreateAction<T>(listener);
-            return (WebWeChatActionFuture)base.PushAction(action);
+            //var action = ActionFactory.CreateAction<T>(listener);
+            return (WebWeChatActionFuture)base.PushAction(ActionFactory.CreateAction<T>);
         }
 
         public WebWeChatActionFuture PushAction<T>(object obj, ActionEventListener listener) where T : WebWeChatAction
         {
-            var action = ActionFactory.CreateAction<T>(obj, listener);
-            return (WebWeChatActionFuture)base.PushAction(action);
+            //var action = ActionFactory.CreateAction<T>(obj, listener);
+            return (WebWeChatActionFuture)base.PushAction(ActionFactory.CreateAction<T>);
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
-using HttpAction.Event;
+﻿using FclEx.Http.Event;
+using System.Threading.Tasks;
 
 namespace WebWeChat.Im.Module.Interface
 {
-    public interface IContactModule: IWeChatModule
+    public interface IContactModule : IWeChatModule
     {
         ValueTask<ActionEvent> GetContact(ActionEventListener listener = null);
 

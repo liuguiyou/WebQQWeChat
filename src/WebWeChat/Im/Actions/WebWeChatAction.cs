@@ -1,16 +1,12 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using FclEx;
-using FclEx.Extensions;
+﻿using FclEx;
 using FclEx.Http.Actions;
 using FclEx.Http.Event;
 using FclEx.Http.Services;
-using HttpAction.Actions;
-using HttpAction.Event;
-using HttpAction.Service;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using WebWeChat.Im.Core;
 using WebWeChat.Im.Event;
 using WebWeChat.Im.Module.Impl;
@@ -73,18 +69,18 @@ namespace WebWeChat.Im.Actions
             switch (type)
             {
                 case ActionEventType.EvtError:
-                    {
-                        var ex = (WeChatException)target;
-                        Logger.LogError($"[Action={ActionName}, Result={typeName}, {ex}");
-                        await _context.FireNotifyAsync(WeChatNotifyEvent.CreateEvent(WeChatNotifyEventType.Error, ex));
-                        break;
-                    }
+                {
+                    var ex = (WeChatException)target;
+                    Logger.LogError($"[Action={ActionName}, Result={typeName}, {ex}");
+                    await _context.FireNotifyAsync(WeChatNotifyEvent.CreateEvent(WeChatNotifyEventType.Error, ex));
+                    break;
+                }
                 case ActionEventType.EvtRetry:
-                    {
-                        var ex = (WeChatException)target;
-                        Logger.LogWarning($"[Action={ActionName}, Result={typeName}, RetryTimes={RetryTimes}][{ex.ToSimpleString()}]");
-                        break;
-                    }
+                {
+                    var ex = (WeChatException)target;
+                    Logger.LogWarning($"[Action={ActionName}, Result={typeName}, RetryTimes={ExcuteTimes}][{ex.ToSimpleString()}]");
+                    break;
+                }
                 case ActionEventType.EvtCanceled:
                     Logger.LogWarning($"[Action={ActionName}, Result={typeName}, Target={target}]");
                     break;

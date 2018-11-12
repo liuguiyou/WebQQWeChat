@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
-using HttpAction.Core;
+﻿using FclEx.Http.Core;
 using FclEx.Http.Event;
+using System;
+using System.Threading.Tasks;
 using WebQQ.Im.Core;
 
 namespace WebQQ.Im.Actions
@@ -17,7 +18,7 @@ namespace WebQQ.Im.Actions
 
         protected override ValueTask<ActionEvent> HandleResponse(HttpRes response)
         {
-            var ptwebqq = HttpService.GetCookie("ptwebqq", Session.CheckSigUrl);
+            var ptwebqq = HttpService.GetCookie(new Uri(Session.CheckSigUrl), "ptwebqq");
             ptwebqq.Expired = true;
             //Session.Ptwebqq = ptwebqq;
             return NotifyOkEventAsync();

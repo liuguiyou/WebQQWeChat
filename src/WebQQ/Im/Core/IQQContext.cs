@@ -7,6 +7,7 @@ namespace WebQQ.Im.Core
 {
     public interface IQQContext : IImContext, IQQNotifyEventHandler
     {
+        T GetSerivce<T>();
         Task FireNotifyAsync(QQNotifyEvent notifyEvent);
     }
 }
